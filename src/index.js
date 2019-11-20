@@ -99,9 +99,9 @@ var line = new THREE.LineSegments( geometrygrid, materialgrid );
 // Create a Cube Mesh with basic material
 
 
-// var geometrycube = new THREE.BoxGeometry(1 , 1 , 1);
-// var materialcube = new THREE.MeshBasicMaterial( { color: "#433F81" } );
-// var cube = new THREE.Mesh( geometrycube, materialcube );
+var geometrycube = new THREE.BoxGeometry(1 , 1 , 1);
+var materialcube = new THREE.MeshBasicMaterial( { color: "#433F81" } );
+var cube = new THREE.Mesh( geometrycube, materialcube );
 
 //for triangle geometry
 var geometrytri = new THREE.Geometry();
@@ -152,13 +152,14 @@ newboxpolygon.verticesNeedUpdate= true;
 
 // Add cube to Scene
 scene.add( line );
-scene.add( triangle );
-scene.add(newTriangle);
-scene.add(boxpolygon);
-scene.add(newboxpolygon);
-//scene.add(cube);
+// scene.add( triangle );
+// scene.add(newTriangle);
+// scene.add(boxpolygon);
+// scene.add(newboxpolygon);
+scene.add(cube);
 
-
+var axis = new THREE.Vector3(0,0,1);
+axis.normalize();
 
 
 // Render Loop
@@ -172,14 +173,20 @@ var render = function () {
   //camera.rotation.z = Math.PI/4;
 
 
-  // var i;
-  // for (i=0 ; i<10 ;i++)
-  // {
-  //   var newCube =cube.clone();
-  //   newCube.rotation.z = i*(360/10)*(Math.PI/180);
-  //   newCube.translateY(2.0);
-  //   scene.add(newCube);
-  // }
+  var i;
+  for (i=0 ; i<10 ;i++)
+  {
+    // var newaxis = axis.clone();
+    // newaxis.normalize();
+    var newCube =cube.clone();
+    newCube.rotation.z =  i*(360/10)*(Math.PI/180) ;
+    //newCube.rotateOnAxis (axis,i*(360/10)*(Math.PI/180));
+    newCube.translateY(3);
+    newCube.scale.set(1,1,1);
+    //newCube.rotation.z =  -i*(360/10)*(Math.PI/180) ;
+   //newCube.rotateOnAxis (axis,i*(360/10)*(Math.PI/180));
+    scene.add(newCube);
+  }
 
   // Render the scene
   renderer.render(scene, prescamera);

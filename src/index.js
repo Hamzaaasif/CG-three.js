@@ -28,7 +28,7 @@ orthocamera.position.z=4;
 //Transformation 
 var transformation = function()
 {
-  var M1 = new THREE.Matrix4().makeTranslation(3,-3,0);  //
+  var M1 = new THREE.Matrix4().makeTranslation(4,-6,0);  //
   var M2 = new THREE.Matrix4(); //scaling matrix
   var M3 = new THREE.Matrix4(); //shear
 
@@ -57,7 +57,6 @@ var transformation = function()
   M = M.multiply(M3).multiply(M2).multiply(M1);
   console.log("Resultant matrix:" , M);
   return M;
-
   
 }
 
@@ -127,10 +126,36 @@ newTriangle.verticesNeedUpdate= true;
 //prescamera.applyMatrix(trans);
 
 
+
+//creating box
+var geometryBox = new THREE.Geometry();
+var materialbox = new THREE.LineBasicMaterial({color: 0x00ff00 , opacity: 0.2});
+geometryBox.vertices.push(new THREE.Vector3(0,0,0));
+geometryBox.vertices.push(new THREE.Vector3(0,4,0));
+geometryBox.vertices.push(new THREE.Vector3(-6,4,0));
+geometryBox.vertices.push(new THREE.Vector3(-6,0,0));
+
+geometryBox.faces.push(new THREE.Face3(0,1,2));
+geometryBox.faces.push(new THREE.Face3(0,2,3));
+geometryBox.computeFaceNormals();
+var boxpolygon = new THREE.Mesh(geometryBox , materialbox);
+boxpolygon.position.set(0.0, 0.0, 0.0);
+
+var newboxpolygon = boxpolygon.clone();
+newboxpolygon.matrixAutoUpdate=false;
+var color="#0x00ff00";
+newboxpolygon.material.color.setHex(0x00ff00)
+var trans =transformation();
+newboxpolygon.applyMatrix(trans);
+newboxpolygon.verticesNeedUpdate= true;
+
+
 // Add cube to Scene
 scene.add( line );
 scene.add( triangle );
 scene.add(newTriangle);
+scene.add(boxpolygon);
+scene.add(newboxpolygon);
 //scene.add(cube);
 
 

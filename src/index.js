@@ -1,3 +1,4 @@
+
 // import * as Three from 'three'
 
 // ------------------------------------------------
@@ -10,8 +11,8 @@ var scene = new THREE.Scene();
 // Create a basic perspective camera
 
 var prescamera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.1, 1000 ); //3D 
-prescamera.position.set(0,8,5);
-prescamera.lookAt(new THREE.Vector3(0,0,5));
+prescamera.position.set(0,0,15,0);
+prescamera.lookAt(new THREE.Vector3(0,0,0));
 
 var orthocamera = new THREE.OrthographicCamera(-10 ,10 ,10 , -10 , 0.1 , 1000 );
 
@@ -21,6 +22,44 @@ orthocamera.position.z=4;
 //orthocamera.lookAt(new THREE.Vector3(0,5,5));
 //orthocamera.lookAt(new THREE.Vector3(0,8,-10));
 //prescamera.position.z = 4;
+
+
+
+//Transformation 
+var transformation = function()
+{
+  var M1 = new THREE.Matrix4().makeTranslation(3,-3,0);  //
+  var M2 = new THREE.Matrix4(); //scaling matrix
+  var M3 = new THREE.Matrix4(); //shear
+
+  var Sx = 2.0 / 3.0;
+  var Sy = Math.sqrt(3)/2;
+  var Sz = 1.0;
+
+  M2.set(//scaling matrix
+    Sx,0,0,0,
+    0,Sy,0,0,
+    0,0,Sz,0,
+    0,0,0,1
+  );
+
+  var xshear = -1.0/Math.sqrt(3.0)
+  var yshear =1;
+  var zshear = 1;
+  M3.set(
+    1,xshear,     0,     0,
+    0,yshear,     0,     0,
+    0,0,       zshear,   0,
+    0,0,            0 ,   1
+  );
+
+  var M = new THREE.Matrix4();
+  M = M.multiply(M3).multiply(M2).multiply(M1);
+  console.log("Resultant matrix:" , M);
+  return M;
+
+  
+}
 
 // Create a renderer with Antialiasing
 var renderer = new THREE.WebGLRenderer({antialias:true});
@@ -40,7 +79,7 @@ document.body.appendChild( renderer.domElement );
 
 //create grid
 
-var size = 4 , step =1;
+var size = 8 , step =1;
 
 //for grid geometry
 var geometrygrid = new THREE.Geometry();
@@ -78,11 +117,24 @@ geometrytri.computeFaceNormals();
 var triangle = new THREE.Mesh(geometrytri, materialtri);
 //triangle.position.set(0.0 , 0.0 , 0.0);
 
+var newTriangle = triangle.clone();
+newTriangle.matrixAutoUpdate=false;
+var color="#00FFFF";
+newTriangle.material.color.setHex(color)
+var trans =transformation();
+newTriangle.applyMatrix(trans);
+newTriangle.verticesNeedUpdate= true;
+//prescamera.applyMatrix(trans);
+
 
 // Add cube to Scene
 scene.add( line );
 scene.add( triangle );
+scene.add(newTriangle);
 //scene.add(cube);
+
+
+
 
 // Render Loop
 var render = function () {
@@ -105,7 +157,7 @@ var render = function () {
   // }
 
   // Render the scene
-  renderer.render(scene, orthocamera);
+  renderer.render(scene, prescamera);
 };
 
 render();

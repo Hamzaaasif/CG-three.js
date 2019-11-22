@@ -1,5 +1,6 @@
 
 // import * as Three from 'three'
+var OrbitControls = require('three-orbitcontrols');
 
 // ------------------------------------------------
 // BASIC SETUP
@@ -7,6 +8,7 @@
 
 // Create an empty scene
 var scene = new THREE.Scene();
+
 
 // Create a basic perspective camera
 
@@ -71,6 +73,8 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 
 // Append Renderer to DOM
 document.body.appendChild( renderer.domElement );
+//
+var controls = new OrbitControls( prescamera, renderer.domElement );
 
 // ------------------------------------------------
 // FUN STARTS HERE
@@ -150,13 +154,63 @@ newboxpolygon.applyMatrix(trans);
 newboxpolygon.verticesNeedUpdate= true;
 
 
+
+
+
+
+//basic barn
+var barn = new THREE.Geometry();
+var barmaterial = new THREE.LineBasicMaterial({color : "#BD968B" , opacity: 0.2});
+barn.vertices.push(new THREE.Vector3(0,0,0));
+barn.vertices.push(new THREE.Vector3(1,0,0));
+barn.vertices.push(new THREE.Vector3(1,1,0));
+barn.vertices.push(new THREE.Vector3(0.5,1.5,0));
+barn.vertices.push(new THREE.Vector3(0,1,0));
+barn.vertices.push(new THREE.Vector3(0,0,1));
+barn.vertices.push(new THREE.Vector3(1,0,1));
+barn.vertices.push(new THREE.Vector3(1,1,1));
+barn.vertices.push(new THREE.Vector3(0.5,1.5,1));
+barn.vertices.push(new THREE.Vector3(0,1,1));
+
+barn.faces.push(new THREE.Face3(0,1,2));
+barn.faces.push(new THREE.Face3(0,2,4)); 
+barn.faces.push(new THREE.Face3(4,2,3));
+
+barn.faces.push(new THREE.Face3(0,5,6));
+barn.faces.push(new THREE.Face3(6,1,0));
+
+barn.faces.push(new THREE.Face3(5,6,7));
+barn.faces.push(new THREE.Face3(9,5,7));
+barn.faces.push(new THREE.Face3(9,7,8));
+
+barn.faces.push(new THREE.Face3(7,6,1));
+barn.faces.push(new THREE.Face3(1,2,7));
+
+barn.faces.push(new THREE.Face3(8,7,2));
+barn.faces.push(new THREE.Face3(2,3,8));
+
+barn.faces.push(new THREE.Face3(9,8,3)); 
+barn.faces.push(new THREE.Face3(3,4,9));
+
+barn.faces.push(new THREE.Face3(9,4,0));
+barn.faces.push(new THREE.Face3(0,5,9));
+barn.faces.push(new THREE.Face3(0,4,9));
+barn.faces.push(new THREE.Face3(5,0,9));
+
+barn.faces.push(new THREE.Face3(0,1,6));
+barn.faces.push(new THREE.Face3(0,6,5));
+
+barn.computeFaceNormals();
+var basicbarn = new THREE.Mesh(barn , barmaterial);
+basicbarn.position.set(0.0, 0.0, 0.0);
 // Add cube to Scene
-scene.add( line );
+//scene.add( line );
 // scene.add( triangle );
 // scene.add(newTriangle);
 // scene.add(boxpolygon);
-// scene.add(newboxpolygon);
-scene.add(cube);
+// scene.add(newboxpolygon);    
+//scene.add(cube);
+scene.add(basicbarn);
 
 var axis = new THREE.Vector3(0,0,1);
 axis.normalize();
@@ -173,20 +227,20 @@ var render = function () {
   //camera.rotation.z = Math.PI/4;
 
 
-  var i;
-  for (i=0 ; i<10 ;i++)
-  {
+  //var i;
+  //for (i=0 ; i<10 ;i++)
+ // {
     // var newaxis = axis.clone();
     // newaxis.normalize();
-    var newCube =cube.clone();
-    newCube.rotation.z =  i*(360/10)*(Math.PI/180) ;
+    //var newCube =cube.clone();
+    //newCube.rotation.z =  i*(360/10)*(Math.PI/180) ;
     //newCube.rotateOnAxis (axis,i*(360/10)*(Math.PI/180));
-    newCube.translateY(3);
-    newCube.scale.set(1,1,1);
+   // newCube.translateY(3);
+    //newCube.scale.set(1,1,1);
     //newCube.rotation.z =  -i*(360/10)*(Math.PI/180) ;
    //newCube.rotateOnAxis (axis,i*(360/10)*(Math.PI/180));
-    scene.add(newCube);
-  }
+  //   scene.add(newCube);
+  // }
 
   // Render the scene
   renderer.render(scene, prescamera);

@@ -13,13 +13,13 @@ var scene = new THREE.Scene();
 // Create a basic perspective camera
 
 var prescamera = new THREE.PerspectiveCamera(70, window.innerWidth/window.innerHeight, 0.1, 1000 ); //3D 
-prescamera.position.set(0,0,15,0);
+prescamera.position.set(6,6,15);
 prescamera.lookAt(new THREE.Vector3(0,0,0));
 
 var orthocamera = new THREE.OrthographicCamera(-10 ,10 ,10 , -10 , 0.1 , 1000 );
 
 //var camera = new THREE.OrthographicCamera(-5 ,5 ,-5 , 5 , 0.1 , 1000 ); //2D camera
-orthocamera.position.z=4;
+orthocamera.position.z=2;
 //orthocamera.position.set(0,10,0);
 //orthocamera.lookAt(new THREE.Vector3(0,5,5));
 //orthocamera.lookAt(new THREE.Vector3(0,8,-10));
@@ -58,7 +58,7 @@ var transformation = function()
   var M = new THREE.Matrix4();
   M = M.multiply(M3).multiply(M2).multiply(M1);
   console.log("Resultant matrix:" , M);
-  return M;
+  return M2;
   
 }
 
@@ -88,13 +88,23 @@ var size = 8 , step =1;
 var geometrygrid = new THREE.Geometry();
 var materialgrid = new THREE.LineBasicMaterial( {color: 0xccccc , opacity: 0.2});
 
-for(var i=-size ; i<=size ; i+=step)
+for(var i=0 ; i<=size ; i+=step)
 {
   console.log("X :",size, "Y: ",i);
-  geometrygrid.vertices.push(new THREE.Vector3(-size , i ,0 ));
+  geometrygrid.vertices.push(new THREE.Vector3(0 , i ,0 ));
   geometrygrid.vertices.push(new THREE.Vector3(size , i ,0 ));
-   geometrygrid.vertices.push(new THREE.Vector3(i, -size  ,0 ));
+   geometrygrid.vertices.push(new THREE.Vector3(i, 0  ,0 ));
    geometrygrid.vertices.push(new THREE.Vector3(i, size, 0 ));
+
+    geometrygrid.vertices.push(new THREE.Vector3(0, 0 , i  ));
+   geometrygrid.vertices.push(new THREE.Vector3(size ,0, i ));
+    geometrygrid.vertices.push(new THREE.Vector3(i,   0, 0));
+    geometrygrid.vertices.push(new THREE.Vector3(i,  0,size));
+
+    geometrygrid.vertices.push(new THREE.Vector3(0, 0 , i  ));
+   geometrygrid.vertices.push(new THREE.Vector3( 0,size, i ));
+    geometrygrid.vertices.push(new THREE.Vector3(0,i, 0));
+    geometrygrid.vertices.push(new THREE.Vector3( 0,i,size));
 }
 
 var line = new THREE.LineSegments( geometrygrid, materialgrid );
@@ -172,39 +182,35 @@ barn.vertices.push(new THREE.Vector3(1,1,1));
 barn.vertices.push(new THREE.Vector3(0.5,1.5,1));
 barn.vertices.push(new THREE.Vector3(0,1,1));
 
-barn.faces.push(new THREE.Face3(0,1,2));
-barn.faces.push(new THREE.Face3(0,2,4)); 
-barn.faces.push(new THREE.Face3(4,2,3));
-
-barn.faces.push(new THREE.Face3(0,5,6));
-barn.faces.push(new THREE.Face3(6,1,0));
-
-barn.faces.push(new THREE.Face3(5,6,7));
-barn.faces.push(new THREE.Face3(9,5,7));
-barn.faces.push(new THREE.Face3(9,7,8));
-
-barn.faces.push(new THREE.Face3(7,6,1));
-barn.faces.push(new THREE.Face3(1,2,7));
-
-barn.faces.push(new THREE.Face3(8,7,2));
-barn.faces.push(new THREE.Face3(2,3,8));
-
-barn.faces.push(new THREE.Face3(9,8,3)); 
-barn.faces.push(new THREE.Face3(3,4,9));
+barn.faces.push(new THREE.Face3(7,9,5));
+barn.faces.push(new THREE.Face3(5,6,7)); 
+barn.faces.push(new THREE.Face3(7,8,9));
 
 barn.faces.push(new THREE.Face3(9,4,0));
 barn.faces.push(new THREE.Face3(0,5,9));
-barn.faces.push(new THREE.Face3(0,4,9));
-barn.faces.push(new THREE.Face3(5,0,9));
 
-barn.faces.push(new THREE.Face3(0,1,6));
-barn.faces.push(new THREE.Face3(0,6,5));
+barn.faces.push(new THREE.Face3(4,2,1));
+barn.faces.push(new THREE.Face3(1,0,4));
+barn.faces.push(new THREE.Face3(4,3,2));
+
+barn.faces.push(new THREE.Face3(5,0,1));
+barn.faces.push(new THREE.Face3(1,6,5));
+
+barn.faces.push(new THREE.Face3(4,8,3));
+barn.faces.push(new THREE.Face3(9,8,4));
+
+barn.faces.push(new THREE.Face3(3,8,7)); 
+barn.faces.push(new THREE.Face3(7,2,3));
+
+ barn.faces.push(new THREE.Face3(7,6,2));
+ barn.faces.push(new THREE.Face3(6,1,2));
+
 
 barn.computeFaceNormals();
 var basicbarn = new THREE.Mesh(barn , barmaterial);
 basicbarn.position.set(0.0, 0.0, 0.0);
 // Add cube to Scene
-//scene.add( line );
+scene.add( line );
 // scene.add( triangle );
 // scene.add(newTriangle);
 // scene.add(boxpolygon);
